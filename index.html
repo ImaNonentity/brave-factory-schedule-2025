@@ -279,13 +279,13 @@
                 })
               )
             ),
-              React.createElement('div', { className: 'mt-12 bg-black/50 backdrop-blur-sm border-t border-purple-500/30 p-6' },
-                React.createElement('div', { className: 'max-w-6xl mx-auto text-center text-purple-300' },
-                  React.createElement('p', null, `Festival Schedule • Real-time updates • ${selectedDay === '23.08' ? 'Saturday' : 'Sunday'}`)
-                )
+            React.createElement('div', { className: 'mt-12 bg-black/50 backdrop-blur-sm border-t border-purple-500/30 p-6' },
+              React.createElement('div', { className: 'max-w-6xl mx-auto text-center text-purple-300' },
+                React.createElement('p', null, `Festival Schedule • Real-time updates • ${selectedDay === '23.08' ? 'Saturday' : 'Sunday'}`)
               )
-            ) // Close the main content wrapper
-          );
+            )
+          ) // Close the main content div (pt-24 md:pt-32)
+        ); // Close the root div
         };
 
         ReactDOM.render(React.createElement(FestivalSchedule), document.getElementById('root'));
