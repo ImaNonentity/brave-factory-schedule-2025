@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRAVE FACTORY Festival Schedule</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; font-family: system-ui, -apple-system, sans-serif; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        
+        const FestivalSchedule = () => {
+          const [currentTime, setCurrentTime] = useState(new Date());
+          const [selectedVenue, setSelectedVenue] = useState('ALL');
+          const [selectedDay, setSelectedDay] = useState('23.08');
+
+          // Update current time every minute
+          useEffect(() => {
+            const timer = setInterval(() => {
+              setCurrentTime(new Date());
+            }, 60000);
+            return () => clearInterval(timer);
+          }, []);
+
+          const festivalData = {
+            '23.08': [
+              { time: '14:00', venue: 'BLACK BOX', artist: 'GAPON & MONOTRONIQUE', type: 'live' },
+              { time: '14:00', venue: 'DEPO', artist: 'LISOVSKYI', type: 'dj' },
+              { time: '14:00', venue: 'GARDEN', artist: 'HAARHI & NOTA YANVARSKA', type: 'live' },
+              { time: '14:00', venue: 'AUDITORIUM', artist: 'ЕЛЕКТРОСЕСТРИ (кінопоказ)', type: 'film' },
+              { time: '16:00', venue: 'DEPO', artist: 'DJ KOOLT (UY)', type: 'dj' },
+              { time: '16:00', venue: 'ANGAR', artist: 'SERGE JAZZMATE', type: 'dj' },
+              { time: '16:30', venue: 'PAVILLION 4', artist: 'HILLMER - LIVE', type: 'live' },
+              { time: '17:00', venue: 'BLACK BOX', artist: 'SAXR - LIVE', type: 'live' },
+              { time: '17:00', venue: 'GARDEN', artist: 'МС РЕП - LIVE', type: 'live' },
+              { time: '17:00', venue: 'AUDITORIUM', artist: 'MARYANA KLOCHKO - LIVE', type: 'live' },
+              { time: '18:00', venue: 'BLACK BOX', artist: 'DJ PLEAD (AU)', type: 'dj' },
+              { time: '18:00', venue: 'PAVILLION 4', artist: 'THE DARK WOOD - LIVE', type: 'live' },
+              { time: '18:00', venue: 'GARDEN', artist: 'КОШИК МЕЛОДІЙ', type: 'live' },
+              { time: '18:30', venue: 'DEPO', artist: 'BOGDAN ZAIETS - LIVE', type: 'live' },
+              { time: '18:30', venue: 'AUDITORIUM', artist: 'KATARINA GRYVUL - LIVE', type: 'live' },
+              { time: '18:30', venue: 'ANGAR', artist: 'PARANOID LONDON (UK) - LIVE', type: 'live' },
+              { time: '19:00', venue: 'PAVILLION 4', artist: 'dOP - Live', type: 'live' },
+              { time: '19:00', venue: 'GARDEN', artist: 'SEBA KORECKY - LIVE', type: 'live' },
+              { time: '19:30', venue: 'DEPO', artist: 'MICHELLE (UY) - LIVE', type: 'live' },
+              { time: '19:30', venue: 'ANGAR', artist: 'OLES & ROMAN K', type: 'dj' },
+              { time: '20:00', venue: 'PAVILLION 4', artist: 'PYMIN - LIVE', type: 'live' },
+              { time: '20:00', venue: 'GARDEN', artist: 'КОШИК МЕЛОДІЙ', type: 'live' },
+              { time: '20:00', venue: 'AUDITORIUM', artist: 'ЕСКАПІСТІКО - INSHA DANCE COMPANY', type: 'performance' },
+              { time: '20:30', venue: 'DEPO', artist: 'TRIPPSY (LT)', type: 'dj' },
+              { time: '21:00', venue: 'BLACK BOX', artist: 'КНЯЗЬ ВОЛОДИМИР - LIVE', type: 'live' },
+              { time: '21:00', venue: 'PAVILLION 4', artist: 'HUNGRY BOYS - LIVE', type: 'live' },
+              { time: '21:00', venue: 'GARDEN', artist: 'THE MANEKEN - LIVE', type: 'live' }
+            ],
+            '24.08': [
+              { time: '11:00', venue: 'DEPO', artist: 'BAMBU', type: 'live' },
+              { time: '11:00', venue: 'GARDEN', artist: 'SERENNE (CH)', type: 'live' },
+              { time: '14:00', venue: 'ANGAR', artist: 'BELLIS & KATIA STIEBER', type: 'live' },
+              { time: '14:30', venue: 'DEPO', artist: 'RADIANT FUTUR - LIVE', type: 'live' },
+              { time: '14:30', venue: 'GARDEN', artist: 'COSMO (KR)', type: 'dj' },
+              { time: '15:00', venue: 'BLACK BOX', artist: 'TAQADDAM & BEY O BEY', type: 'live' },
+              { time: '15:00', venue: 'AUDITORIUM', artist: 'ВЕЧЕННЯ PEACHES (кінопоказ)', type: 'film' },
+              { time: '15:30', venue: 'DEPO', artist: 'IGOR GLUSHKO', type: 'dj' },
+              { time: '16:30', venue: 'PAVILLION 4', artist: 'SHERPA THE TIGER - LIVE', type: 'live' },
+              { time: '16:30', venue: 'ANGAR', artist: 'BINH (DE)', type: 'dj' },
+              { time: '17:00', venue: 'BLACK BOX', artist: 'TYSK - LIVE', type: 'live' },
+              { time: '17:00', venue: 'GARDEN', artist: 'MAP.ACHE (DE) - LIVE', type: 'live' },
+              { time: '17:00', venue: 'AUDITORIUM', artist: 'BRYOZONE - LIVE', type: 'live' },
+              { time: '17:30', venue: 'PAVILLION 4', artist: 'ZLYPNI - LIVE', type: 'live' },
+              { time: '18:00', venue: 'BLACK BOX', artist: 'ALEX SAVAGE', type: 'dj' },
+              { time: '18:30', venue: 'DEPO', artist: 'MARKO SHUTTLE (IT)', type: 'dj' },
+              { time: '18:45', venue: 'PAVILLION 4', artist: 'SI PROCESS - LIVE', type: 'live' },
+              { time: '19:00', venue: 'GARDEN', artist: 'EDUARDO DE LA CALLE (SP)', type: 'dj' },
+              { time: '19:00', venue: 'AUDITORIUM', artist: 'POLY CHAIN & SOPHIA BULGAKOVA Nemesis AV Live Premiere', type: 'live' },
+              { time: '19:00', venue: 'ANGAR', artist: 'ARNAUD REBOTINI (FR) -LIVE', type: 'live' },
+              { time: '19:30', venue: 'PAVILLION 4', artist: 'МІША ПРАВИЛЬНИЙ - LIVE', type: 'live' },
+              { time: '20:00', venue: 'BLACK BOX', artist: 'DJ MELL G (DE)', type: 'dj' },
+              { time: '20:30', venue: 'AUDITORIUM', artist: 'MARIA & MAGDALYNA & PARKING SPOT "Танці На Краю Світу"', type: 'performance' },
+              { time: '20:30', venue: 'ANGAR', artist: 'SHULTS.SASHA', type: 'dj' },
+              { time: '21:00', venue: 'PAVILLION 4', artist: 'HIDDEN ELEMENT - LIVE', type: 'live' }
+            ]
+          };
+
+          const venues = ['ALL', 'BLACK BOX', 'DEPO', 'PAVILLION 4', 'GARDEN', 'AUDITORIUM', 'ANGAR'];
+
+          const getTypeIcon = (type) => {
+            const iconStyle = "w-4 h-4";
+            switch (type) {
+              case 'live': return React.createElement('svg', { className: iconStyle, fill: 'currentColor', viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z' }));
+              case 'dj': return React.createElement('svg', { className: iconStyle, fill: 'currentColor', viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M16 4c4.42 0 8 3.58 8 8s-3.58 8-8 8-8-3.58-8-8 3.58-8 8-8m0-2C9.37 2 4 7.37 4 14s5.37 12 12 12 12-5.37 12-12S22.63 2 16 2z' }));
+              case 'film': return React.createElement('svg', { className: iconStyle, fill: 'currentColor', viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z' }));
+              case 'performance': return React.createElement('svg', { className: iconStyle, fill: 'currentColor', viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M16 4c4.42 0 8 3.58 8 8s-3.58 8-8 8-8-3.58-8-8 3.58-8 8-8m0-2C9.37 2 4 7.37 4 14s5.37 12 12 12 12-5.37 12-12S22.63 2 16 2z' }));
+              default: return null;
+            }
+          };
+
+          const getTypeColor = (type) => {
+            switch (type) {
+              case 'live': return 'border-l-purple-500 bg-purple-50';
+              case 'dj': return 'border-l-blue-500 bg-blue-50';
+              case 'film': return 'border-l-red-500 bg-red-50';
+              case 'performance': return 'border-l-green-500 bg-green-50';
+              default: return 'border-l-gray-300 bg-gray-50';
+            }
+          };
+
+          const isCurrentlyPlaying = (eventTime, nextEventTime) => {
+            const now = currentTime;
+            const [hours, minutes] = eventTime.split(':');
+            const eventDate = new Date();
+            eventDate.setHours(parseInt(hours), parseInt(minutes), 0);
+            
+            if (nextEventTime) {
+              const [nextHours, nextMinutes] = nextEventTime.split(':');
+              const nextEventDate = new Date();
+              nextEventDate.setHours(parseInt(nextHours), parseInt(nextMinutes), 0);
+              return now >= eventDate && now < nextEventDate;
+            }
+            
+            const endTime = new Date(eventDate.getTime() + 60 * 60 * 1000);
+            return now >= eventDate && now < endTime;
+          };
+
+          const filteredEvents = festivalData[selectedDay]
+            .filter(event => selectedVenue === 'ALL' || event.venue === selectedVenue);
+
+          const groupedEvents = filteredEvents.reduce((acc, event) => {
+            if (!acc[event.time]) acc[event.time] = [];
+            acc[event.time].push(event);
+            return acc;
+          }, {});
+
+          const timeSlots = Object.keys(groupedEvents).sort();
+
+          return React.createElement('div', { className: 'min-h-screen bg-gradient-to-br from-purple-900 via-gray-900 to-black text-white' },
+            React.createElement('div', { className: 'bg-black/50 backdrop-blur-sm border-b border-purple-500/30 sticky top-0 z-10' },
+              React.createElement('div', { className: 'max-w-6xl mx-auto p-4' },
+                React.createElement('div', { className: 'flex flex-col md:flex-row justify-between items-center gap-4' },
+                  React.createElement('div', null,
+                    React.createElement('h1', { className: 'text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent' }, 'BRAVE FACTORY'),
+                    React.createElement('div', { className: 'flex items-center gap-2 text-purple-300 mt-1' },
+                      React.createElement('svg', { className: 'w-4 h-4', fill: 'currentColor', viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z' })),
+                      React.createElement('span', null, currentTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }))
+                    )
+                  ),
+                  React.createElement('div', { className: 'flex flex-col md:flex-row gap-4' },
+                    React.createElement('div', { className: 'flex bg-gray-800/50 rounded-lg p-1' },
+                      ['23.08', '24.08'].map(day =>
+                        React.createElement('button', {
+                          key: day,
+                          onClick: () => setSelectedDay(day),
+                          className: `px-4 py-2 rounded transition-all ${selectedDay === day ? 'bg-purple-600 text-white' : 'text-gray-300 hover:text-white'}`
+                        }, day === '23.08' ? 'СБ 23.08' : 'НД 24.08')
+                      )
+                    )
+                  )
+                ),
+                React.createElement('div', { className: 'mt-4' },
+                  React.createElement('div', { className: 'text-sm text-purple-300 mb-2' }, 'Filter by Stage:'),
+                  React.createElement('div', { className: 'flex flex-wrap gap-2' },
+                    venues.map(venue =>
+                      React.createElement('button', {
+                        key: venue,
+                        onClick: () => setSelectedVenue(venue),
+                        className: `px-3 py-1 rounded-full text-sm transition-all ${selectedVenue === venue ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/25' : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 hover:text-white border border-gray-600'}`
+                      }, venue)
+                    )
+                  )
+                )
+              )
+            ),
+            React.createElement('div', { className: 'max-w-6xl mx-auto p-4' },
+              React.createElement('div', { className: 'flex flex-wrap gap-4 mb-6' },
+                React.createElement('div', { className: 'flex items-center gap-2 text-sm' },
+                  React.createElement('svg', { className: 'w-4 h-4 text-purple-400', fill: 'currentColor', viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z' })),
+                  React.createElement('span', null, 'Live Performance')
+                ),
+                React.createElement('div', { className: 'flex items-center gap-2 text-sm' },
+                  React.createElement('svg', { className: 'w-4 h-4 text-blue-400', fill: 'currentColor', viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M16 4c4.42 0 8 3.58 8 8s-3.58 8-8 8-8-3.58-8-8 3.58-8 8-8m0-2C9.37 2 4 7.37 4 14s5.37 12 12 12 12-5.37 12-12S22.63 2 16 2z' })),
+                  React.createElement('span', null, 'DJ Set')
+                ),
+                React.createElement('div', { className: 'flex items-center gap-2 text-sm' },
+                  React.createElement('svg', { className: 'w-4 h-4 text-red-400', fill: 'currentColor', viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z' })),
+                  React.createElement('span', null, 'Film Screening')
+                ),
+                React.createElement('div', { className: 'flex items-center gap-2 text-sm' },
+                  React.createElement('svg', { className: 'w-4 h-4 text-green-400', fill: 'currentColor', viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M16 4c4.42 0 8 3.58 8 8s-3.58 8-8 8-8-3.58-8-8 3.58-8 8-8m0-2C9.37 2 4 7.37 4 14s5.37 12 12 12 12-5.37 12-12S22.63 2 16 2z' })),
+                  React.createElement('span', null, 'Performance Art')
+                )
+              )
+            ),
+            React.createElement('div', { className: 'max-w-6xl mx-auto p-4' },
+              React.createElement('div', { className: 'space-y-6' },
+                timeSlots.map((time, index) => {
+                  const events = groupedEvents[time];
+                  const nextTime = timeSlots[index + 1];
+                  const hasCurrentEvent = events.some(event => isCurrentlyPlaying(time, nextTime));
+
+                  return React.createElement('div', {
+                    key: time,
+                    className: `transition-all duration-500 ${hasCurrentEvent ? 'transform scale-105' : ''}`
+                  },
+                    React.createElement('div', {
+                      className: `rounded-lg border-2 p-6 ${hasCurrentEvent ? 'bg-gradient-to-r from-purple-600/20 to-pink-600/20 border-purple-400 shadow-lg shadow-purple-500/25' : 'bg-gray-800/30 border-gray-700'}`
+                    },
+                      React.createElement('div', { className: 'flex items-center gap-3 mb-4' },
+                        React.createElement('div', {
+                          className: `text-2xl font-bold ${hasCurrentEvent ? 'text-purple-300' : 'text-gray-300'}`
+                        }, time),
+                        hasCurrentEvent && React.createElement('div', { className: 'flex items-center gap-2 bg-purple-600 px-3 py-1 rounded-full text-sm font-medium' },
+                          React.createElement('div', { className: 'w-2 h-2 bg-white rounded-full animate-pulse' }),
+                          'HAPPENING NOW'
+                        )
+                      ),
+                      React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4' },
+                        events.map((event, eventIndex) => {
+                          const isPlaying = isCurrentlyPlaying(time, nextTime);
+                          return React.createElement('div', {
+                            key: eventIndex,
+                            className: `border-l-4 pl-4 py-3 rounded-r transition-all ${getTypeColor(event.type)} ${isPlaying ? 'shadow-md transform scale-105' : ''}`
+                          },
+                            React.createElement('div', { className: 'flex items-center gap-2 mb-2' },
+                              React.createElement('svg', { className: 'w-4 h-4 text-gray-600', fill: 'currentColor', viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z' })),
+                              React.createElement('span', { className: 'font-medium text-gray-800 text-sm' }, event.venue),
+                              getTypeIcon(event.type)
+                            ),
+                            React.createElement('div', { className: 'font-bold text-gray-900 text-sm leading-tight' }, event.artist)
+                          );
+                        })
+                      )
+                    )
+                  );
+                })
+              )
+            ),
+            React.createElement('div', { className: 'mt-12 bg-black/50 backdrop-blur-sm border-t border-purple-500/30 p-6' },
+              React.createElement('div', { className: 'max-w-6xl mx-auto text-center text-purple-300' },
+                React.createElement('p', null, `Festival Schedule • Real-time updates • ${selectedDay === '23.08' ? 'Saturday' : 'Sunday'}`)
+              )
+            )
+          );
+        };
+
+        ReactDOM.render(React.createElement(FestivalSchedule), document.getElementById('root'));
+    </script>
+</body>
+</html>
