@@ -204,7 +204,7 @@
               )
             ),
             
-            {/* Floating filter button when header is hidden */}
+            // Floating filter button when header is hidden
             !headerVisible && React.createElement('button', {
               onClick: () => setHeaderVisible(true),
               className: 'fixed top-4 right-4 z-40 bg-purple-600 hover:bg-purple-700 text-white p-3 md:p-3 rounded-full shadow-lg transition-all duration-200 active:scale-95 touch-manipulation'
@@ -214,7 +214,7 @@
               )
             ),
             
-            {/* Main content with top padding to account for fixed header */}
+            // Main content with top padding to account for fixed header
             React.createElement('div', { className: 'pt-24 md:pt-32' }, // Less padding on mobile
               React.createElement('div', { className: 'max-w-6xl mx-auto p-4' },
               React.createElement('div', { className: 'flex flex-wrap gap-4 mb-6' },
