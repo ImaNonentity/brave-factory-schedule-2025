@@ -62,8 +62,8 @@
             margin: 0;
             font-family: 'MyCustomFont', system-ui, -apple-system, sans-serif;
             background-image: url('https://static-image-2.s3.us-west-1.amazonaws.com/blog_images/photo_2025-08-21_21-47-57.jpg');
-            background-size: 100% 100%;
-            background-position: center;
+            background-size: cover;
+            background-position: center top;
             background-attachment: fixed;
             background-repeat: no-repeat;
         }
@@ -324,7 +324,7 @@
             const timeSlots = Object.keys(groupedEvents).sort().filter(time => groupedEvents[time].length > 0);
 
 
-          return React.createElement('div', { className: 'min-h-screen text-white' },
+        return React.createElement('div', { className: 'min-h-screen text-white all-view' },
             React.createElement('div', { className: 'bg-black/50 backdrop-blur-sm border-b border-purple-500/30 sticky top-0 z-10' },
               React.createElement('div', { className: 'max-w-6xl mx-auto p-2 md:p-4' },
                 React.createElement('div', { className: 'flex flex-col gap-2' },
