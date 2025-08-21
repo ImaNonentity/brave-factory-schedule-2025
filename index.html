@@ -13,34 +13,45 @@
             font-family: 'MyCustomFont';
             src: url('./UnitySans-Basic.ttf') format('truetype');
         }
+
         .artist-box-live {
             background-color: rgba(139, 92, 246, 0.3) !important;
             backdrop-filter: blur(40px);
             border-left-color: #8b5cf6 !important;
+    /*text-shadow: 0 0 3px #c4b5fd, 0 0 6px #c4b5fd !important;*/
+
         }
 
         .artist-box-dj {
             background-color: rgba(59, 130, 246, 0.3) !important;
             backdrop-filter: blur(40px);
             border-left-color: #3b82f6 !important;
+    /*text-shadow: 0 0 3px #93c5fd, 0 0 6px #93c5fd !important;*/
+
         }
 
         .artist-box-film {
             background-color: rgba(239, 68, 68, 0.3) !important;
             backdrop-filter: blur(40px);
             border-left-color: #ef4444 !important;
+    /*text-shadow: 0 0 3px #fca5a5, 0 0 6px #fca5a5 !important;*/
+
         }
 
         .artist-box-performance {
             background-color: rgba(34, 197, 94, 0.3) !important;
             backdrop-filter: blur(40px);
             border-left-color: #22c55e !important;
+    /*text-shadow: 0 0 3px #86efac, 0 0 6px #86efac !important;*/
+
         }
 
         .artist-box-past {
             background-color: rgba(0, 0, 0, 0.4) !important;
             backdrop-filter: blur(40px);
             border-left-color: #6b7280 !important;
+    /*text-shadow: 0 0 3px #d1d5db, 0 0 6px #d1d5db !important;*/
+
         }
 
         .artist-modal {
@@ -51,7 +62,7 @@
             margin: 0;
             font-family: 'MyCustomFont', system-ui, -apple-system, sans-serif;
             background-image: url('https://static-image-2.s3.us-west-1.amazonaws.com/blog_images/photo_2025-08-21_21-47-57.jpg');
-            background-size: cover;
+            background-size: 100% 100%;
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
@@ -92,9 +103,9 @@
                       'Суботнє відкриття найбільш непередбачуваного стейджу Брейву у руках харків’ян: і Сашко, і Рома є резидентами культового клубу “Zhivot”. Кросжанрова вінілова подорож від двох найсильніших харківських селекторів — на перший виступ суботи варто взяти пляшку води.' },
               { time: '14:00', venue: 'DEPO', artist: 'LISOVSKYI', type: 'dj', description: 'Lisovskyi\n' +
                       'Київський диджей, продюсер, засновник вінілових лейблів FIB Records і Lisopylka Records відкриватиме суботню вечірку в компанії глітчу, мінімалу і теку, що жартуватимуть із слухачем поміж зведенням платівок між собою.' },
-              { time: '14:00', venue: 'GARDEN', artist: 'HAARHI & NOTA YANVARSKA', type: 'dj', description: 'Haathi & Nota Yanvarska\n' +
+              { time: '14:00', venue: 'GARDEN', artist: 'HAATHI & NOTA YANVARSKA', type: 'dj', description: 'Haathi & Nota Yanvarska\n' +
                       'Суботнє відкриття танцполу серед дерев у руках співзасновників формації THP, котра незабаром святкуватиме свій 10-й день народження. Минулорічний сет хлопців на Брейві був різнобарвною анімацією для тих, хто приїхав на початку. Нічого нового: the ongoing WOW is happening right NOW.' },
-              { time: '14:00', venue: 'AUDITORIUM', artist: 'ЕЛЕКТРОСЕСТРИ (кінопоказ)', type: 'film', description: 'Електросестри — реж. Ліза Ровнер, 2021, 86‘\n' +
+              { time: '15:00', venue: 'AUDITORIUM', artist: 'ЕЛЕКТРОСЕСТРИ (кінопоказ)', type: 'film', description: 'Електросестри — реж. Ліза Ровнер, 2021, 86‘\n' +
                       'Суботу відкриватиме фільм-триб’ют жінкам, які створювали електронну музику в умовах, коли вся увага та слава діставалась чоловікам. Найвідоміший джинґл кока-коли, футуристична заставка до серіалу «Доктор Хто» і саундтреки до фільмів Кубріка — еволюція звуку завдячує жіночій принциповості та боротьбі.' },
               { time: '16:00', venue: 'DEPO', artist: 'DJ KOOLT (UY)', type: 'dj', description: 'DJ Koolt\n' +
                       'Диджей-ікона Південної Америки і резидент уругвайського клубу Phonoteque показуватиме своє святкове кіно на танцполі під сонцем. Чи варто йти на фестиваль тільки заради одного артиста — більшість уругвайських слухачів знають відповідь, котру українці сформулюють для себе самі.' },
@@ -166,7 +177,7 @@
               { time: '19:30', venue: 'PAVILLION 4', artist: 'МІША ПРАВИЛЬНИЙ - LIVE', type: 'live', description: 'Ліричні монологи та бунтарські реп-маніфести: творчість Міші щира та народжуються на стику особистого досвіду за сценаріями, автором яких є саме життя.' },
               { time: '20:00', venue: 'BLACK BOX', artist: 'DJ MELL G (DE)', type: 'dj', description: 'Фінальний виступ фестивалю у неділю від гамбурської диджейки — потенційна номінація “гран-прі”. Закохана у Київ і українців, Меліна Гаусманн святкуватиме День Незалежності у темряві танцполу “Black Box”. Впевнені, але запитаємо: ви готові побачити найкраще кіно у житті?' },
               { time: '20:30', venue: 'AUDITORIUM', artist: 'MARIA & MAGDALYNA & PARKING SPOT "Танці На Краю Світу"', type: 'performance', description: 'Фінальним подарунком сцени до Дня Незалежності є театральна вистава акторок Надії Голубцової, Марусі Іонової і електронного музиканта Parking Spot про подорожі станами. Переосмислення творів українських письменників є почесною місією артистів, котра обрала їх сама.' },
-              { time: '20:30', venue: 'ANGAR', artist: 'SHULTS.SASHA', type: 'dj', description: 'Фінальним кадром святкування Дня Незалежності є виступ резидента Closer- у і співзасновника Octan Recordstore. Закриваючий сет Сашка, народженого у серці козацької держави — Запоріжжі — завершить зйомки найкасовішого фільму серпня оплесками і криком «стоп, знято».' },
+              { time: '20:30', venue: 'ANGAR', artist: 'SHULTS.SASHAA', type: 'dj', description: 'Фінальним кадром святкування Дня Незалежності є виступ резидента Closer- у і співзасновника Octan Recordstore. Закриваючий сет Сашка, народженого у серці козацької держави — Запоріжжі — завершить зйомки найкасовішого фільму серпня оплесками і криком «стоп, знято».' },
               { time: '21:00', venue: 'PAVILLION 4', artist: 'HIDDEN ELEMENT - LIVE', type: 'live', description: 'Новий етап його звучання схожий на авторське кіно: без жанрових рамок і технічних сценаріїв, з повним прийняттям себе й музикою, що лунає наживо.' }
             ]
           };
