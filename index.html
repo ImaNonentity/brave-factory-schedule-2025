@@ -21,8 +21,9 @@
         const FestivalSchedule = () => {
           const [currentTime, setCurrentTime] = useState(new Date());
           const [selectedVenue, setSelectedVenue] = useState('ALL');
-          const [selectedDay, setSelectedDay] = useState('23.08');
+          const [selectedDay, setSelectedDay] = useState('21.08');
           const [selectedArtist, setSelectedArtist] = useState(null);
+          const [showPastPerformances, setShowPastPerformances] = useState(true);
 
           // Update current time every minute
           useEffect(() => {
@@ -33,7 +34,7 @@
           }, []);
 
           const festivalData = {
-            '23.08': [
+            '21.08': [
               { time: '14:00', venue: 'BLACK BOX', artist: 'GAPON & MONOTRONIQUE', type: 'dj', description: 'Gapon & Monotronique\n' +
                       'Суботнє відкриття найбільш непередбачуваного стейджу Брейву у руках харків’ян: і Сашко, і Рома є резидентами культового клубу “Zhivot”. Кросжанрова вінілова подорож від двох найсильніших харківських селекторів — на перший виступ суботи варто взяти пляшку води.' },
               { time: '14:00', venue: 'DEPO', artist: 'LISOVSKYI', type: 'dj', description: 'Lisovskyi\n' +
@@ -92,7 +93,8 @@
                       'Минулорічний виступ резидентки швейцарського клубу «Supermarket» в Closer зібрав настільки багато уваги, що відкрити недільний Брейв власним гіпнотичним і чаруючим сетом було риторичним питанням.' },
               { time: '14:00', venue: 'ANGAR', artist: 'BELLIS & KATIA STIEBER', type: 'dj', description: 'Béllis & Katia Stieber\n' +
                       'Недільне відкриття фестивалю у руках засновниць формації Hybrid Moment. Запуск однойменного лейблу, регулярні виступи на знакових українських майданчиках і нестандартний для вітчизняного слухача звук — Марго і Катерина знають, як створити той самий момент, що змінює все.' },
-              { time: '14:30', venue: 'DEPO', artist: 'RADIANT FUTUR - LIVE', type: 'live', description: '' },
+              { time: '14:30', venue: 'DEPO', artist: 'RADIANT FUTUR - LIVE', type: 'live', description: 'Radiant Futur — live\n' +
+                      'Новий лайв Яна Єрьомєнко матиме ексклюзивну прем’єру на Брейві. Сольний реліз на Vortex і участь у компіляції Lirica Archives — від Брейву до Брейву студійна робота артиста є нескінченним знімальним днем.\n' },
               { time: '14:30', venue: 'GARDEN', artist: 'COSMO (KR)', type: 'dj', description: 'Cosmo\n' +
                       'Південно-корейська продюсерка доповнила глибокий музичний світ Giegling органічно, знайшовши там своє затишне місце, як і у Гардені в неділю.' },
               { time: '15:00', venue: 'BLACK BOX', artist: 'TAQADDAM & BEY O BEY', type: 'dj', description: 'Taqaddam & Bey O Bey\n' +
@@ -210,14 +212,21 @@
               case 'current':
                 return baseColor.replace('bg-purple-50', 'bg-green-100').replace('bg-blue-50', 'bg-green-100').replace('bg-red-50', 'bg-green-100').replace('bg-green-50', 'bg-green-100') + ' ring-2 ring-green-400';
               case 'past':
-                return 'border-l-gray-400 bg-gray-100';
+                return 'border-l-gray-500 bg-gray-200 opacity-60';
               default:
                 return baseColor;
             }
           };
 
           const filteredEvents = festivalData[selectedDay]
-            .filter(event => selectedVenue === 'ALL' || event.venue === selectedVenue);
+            .filter(event => selectedVenue === 'ALL' || event.venue === selectedVenue)
+            .filter(event => {
+              if (!showPastPerformances) {
+                const status = getPerformanceStatus(event, festivalData[selectedDay]);
+                return status !== 'past';
+              }
+              return true;
+            });
 
           const groupedEvents = filteredEvents.reduce((acc, event) => {
             if (!acc[event.time]) acc[event.time] = [];
@@ -225,7 +234,7 @@
             return acc;
           }, {});
 
-          const timeSlots = Object.keys(groupedEvents).sort();
+          const timeSlots = Object.keys(groupedEvents).sort().filter(time => groupedEvents[time].length > 0);
 
           return React.createElement('div', { className: 'min-h-screen bg-gradient-to-br from-purple-900 via-gray-900 to-black text-white' },
             React.createElement('div', { className: 'bg-black/50 backdrop-blur-sm border-b border-purple-500/30 sticky top-0 z-10' },
@@ -239,12 +248,12 @@
                         React.createElement('span', null, currentTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }))
                       ),
                       React.createElement('div', { className: 'flex bg-gray-800/50 rounded-lg p-1' },
-                        ['23.08', '24.08'].map(day =>
+                        ['21.08', '24.08'].map(day =>
                           React.createElement('button', {
                             key: day,
                             onClick: () => setSelectedDay(day),
                             className: `px-2 md:px-4 py-1 md:py-2 rounded text-sm transition-all ${selectedDay === day ? 'bg-purple-600 text-white' : 'text-gray-300 hover:text-white'}`
-                          }, day === '23.08' ? 'СБ 23' : 'НД 24')
+                          }, day === '21.08' ? 'СБ 21' : 'НД 24')
                         )
                       )
                     )
@@ -278,6 +287,10 @@
                 React.createElement('div', { className: 'flex items-center gap-2' },
                   React.createElement('svg', { className: 'w-3 h-3 md:w-4 md:h-4 text-green-400', fill: 'currentColor', viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M16 4c4.42 0 8 3.58 8 8s-3.58 8-8 8-8-3.58-8-8 3.58-8 8-8m0-2C9.37 2 4 7.37 4 14s5.37 12 12 12 12-5.37 12-12S22.63 2 16 2z' })),
                   React.createElement('span', null, 'Performance Art')
+                ),
+                React.createElement('div', { className: 'flex items-center gap-2 text-gray-500' },
+                  React.createElement('div', { className: 'w-3 h-3 md:w-4 md:h-4 bg-gray-300 rounded opacity-60' }),
+                  React.createElement('span', null, 'Past Performance')
                 )
               )
             ),
@@ -307,19 +320,22 @@
                       React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4' },
                         events.map((event, eventIndex) => {
                           const status = getPerformanceStatus(event, festivalData[selectedDay]);
+                          const isPast = status === 'past';
                           return React.createElement('div', {
                             key: eventIndex,
                             className: `border-l-4 pl-3 md:pl-4 py-2 md:py-3 rounded-r transition-all cursor-pointer hover:shadow-md ${
                               getStatusColor(status, event.type)
-                            } ${status === 'current' ? 'shadow-md transform scale-105' : ''}`,
+                            } ${status === 'current' ? 'shadow-md transform scale-105' : ''} ${
+                              isPast ? 'transform scale-95 hover:scale-100' : ''
+                            }`,
                             onClick: () => setSelectedArtist(event)
                           },
                             React.createElement('div', { className: 'flex items-center gap-2 mb-1 md:mb-2' },
-                              React.createElement('svg', { className: 'w-3 h-3 md:w-4 md:h-4 text-purple-400', fill: 'currentColor', viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z' })),
-                              React.createElement('span', { className: 'font-medium text-gray-800 text-xs md:text-sm' }, event.venue),
-                              getTypeIcon(event.type)
+                              React.createElement('svg', { className: `w-3 h-3 md:w-4 md:h-4 ${isPast ? 'text-gray-500' : 'text-purple-400'}`, fill: 'currentColor', viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z' })),
+                              React.createElement('span', { className: `font-medium text-xs md:text-sm ${isPast ? 'text-gray-600' : 'text-gray-800'}` }, event.venue),
+                              React.createElement('div', { className: isPast ? 'opacity-50' : '' }, getTypeIcon(event.type))
                             ),
-                            React.createElement('div', { className: 'font-bold text-gray-900 text-xs md:text-sm leading-tight' }, event.artist)
+                            React.createElement('div', { className: `font-bold text-xs md:text-sm leading-tight ${isPast ? 'text-gray-700' : 'text-gray-900'}` }, event.artist)
                           );
                         })
                       )
@@ -363,7 +379,7 @@
 
             React.createElement('div', { className: 'mt-12 bg-black/50 backdrop-blur-sm border-t border-purple-500/30 p-6' },
               React.createElement('div', { className: 'max-w-6xl mx-auto text-center text-purple-300' },
-                React.createElement('p', { className: 'text-sm' }, `Festival Schedule • Real-time updates • ${selectedDay === '23.08' ? 'Saturday' : 'Sunday'}`)
+                React.createElement('p', { className: 'text-sm' }, `Festival Schedule • Real-time updates • ${selectedDay === '21.08' ? 'Saturday' : 'Sunday'}`)
               )
             )
           );
