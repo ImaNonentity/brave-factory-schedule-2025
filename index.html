@@ -129,26 +129,37 @@
           };
 
             const getPerformanceTimeSlot = (event, allEvents) => {
-            const sameVenueEvents = allEvents
-              .filter(e => e.venue === event.venue)
-              .sort((a, b) => a.time.localeCompare(b.time));
+              const sameVenueEvents = allEvents
+                .filter(e => e.venue === event.venue)
+                .sort((a, b) => a.time.localeCompare(b.time));
 
-            const currentIndex = sameVenueEvents.findIndex(e =>
-              e.time === event.time && e.artist === event.artist
-            );
+              const currentIndex = sameVenueEvents.findIndex(e =>
+                e.time === event.time && e.artist === event.artist
+              );
 
-            const nextEvent = sameVenueEvents[currentIndex + 1];
+              const nextEvent = sameVenueEvents[currentIndex + 1];
 
-            if (nextEvent) {
-              return `${event.time}-${nextEvent.time}`;
-            } else {
-              // Last event, assume 1 hour duration
-              const [hours, minutes] = event.time.split(':');
-              const endTime = new Date();
-              endTime.setHours(parseInt(hours) + 1, parseInt(minutes));
-              return `${event.time}-${endTime.toTimeString().slice(0, 5)}`;
-            }
-          };
+              if (nextEvent) {
+                return `${event.time}-${nextEvent.time}`;
+              } else {
+                // Last event, assume up to 4 hours, clamp at 23:00
+                const [hours, minutes] = event.time.split(':');
+                const startHour = parseInt(hours, 10);
+                const startMinute = parseInt(minutes, 10);
+
+                let endHour = startHour + 4;
+                let endMinute = startMinute;
+
+                if (endHour > 23 || (endHour === 23 && endMinute > 0)) {
+                  endHour = 23;
+                  endMinute = 0; // clamp to 23:00 sharp
+                }
+
+                const formattedEnd = `${endHour.toString().padStart(2, '0')}:${endMinute.toString().padStart(2, '0')}`;
+                return `${event.time}-${formattedEnd}`;
+              }
+            };
+
 
           const getPerformanceStatus = (event, allEvents, selectedDay) => {
               const now = currentTime;
