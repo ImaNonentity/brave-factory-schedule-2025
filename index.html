@@ -23,7 +23,13 @@
           const [selectedVenue, setSelectedVenue] = useState('ALL');
           const [selectedDay, setSelectedDay] = useState('21.08');
           const [selectedArtist, setSelectedArtist] = useState(null);
+          const [selectedSlot, setSelectedSlot] = useState(null);
           const [showPastPerformances, setShowPastPerformances] = useState(true);
+
+          // Reset slot when day changes
+          useEffect(() => {
+              setSelectedSlot(null);
+              }, [selectedDay]);
 
           // Update current time every minute
           useEffect(() => {
@@ -144,47 +150,55 @@
             }
           };
 
-          const getPerformanceStatus = (event, allEvents) => {
-            const now = currentTime;
-            const [hours, minutes] = event.time.split(':');
-            const eventDate = new Date();
-            eventDate.setHours(parseInt(hours), parseInt(minutes), 0);
+          const getPerformanceStatus = (event, allEvents, selectedDay) => {
+              const now = currentTime;
 
-            // Find next event on the same stage
-            const sameVenueEvents = allEvents
-              .filter(e => e.venue === event.venue)
-              .sort((a, b) => a.time.localeCompare(b.time));
+              // Parse selectedDay like '21.08' -> day/month
+              const [day, month] = selectedDay.split('.').map(Number);
+              const [hours, minutes] = event.time.split(':');
 
-            const currentIndex = sameVenueEvents.findIndex(e =>
-              e.time === event.time && e.artist === event.artist
-            );
+              // Event datetime
+              const eventDate = new Date();
+              eventDate.setFullYear(now.getFullYear(), month - 1, day);
+              eventDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
 
-            const nextEvent = sameVenueEvents[currentIndex + 1];
+              // Find next event on the same stage
+              const sameVenueEvents = allEvents
+                .filter(e => e.venue === event.venue)
+                .sort((a, b) => a.time.localeCompare(b.time));
 
-            if (nextEvent) {
-              const [nextHours, nextMinutes] = nextEvent.time.split(':');
-              const nextEventDate = new Date();
-              nextEventDate.setHours(parseInt(nextHours), parseInt(nextMinutes), 0);
+              const currentIndex = sameVenueEvents.findIndex(
+                e => e.time === event.time && e.artist === event.artist
+              );
 
-              if (now >= eventDate && now < nextEventDate) {
-                return 'current'; // Currently performing
-              } else if (now >= nextEventDate) {
-                return 'past'; // Performance finished
+              const nextEvent = sameVenueEvents[currentIndex + 1];
+
+              if (nextEvent) {
+                const [nextHours, nextMinutes] = nextEvent.time.split(':');
+                const nextEventDate = new Date();
+                nextEventDate.setFullYear(now.getFullYear(), month - 1, day);
+                nextEventDate.setHours(parseInt(nextHours), parseInt(nextMinutes), 0, 0);
+
+                if (now >= eventDate && now < nextEventDate) {
+                  return 'current';
+                } else if (now >= nextEventDate) {
+                  return 'past';
+                } else {
+                  return 'future';
+                }
               } else {
-                return 'future'; // Not started yet
+                // Last event of the day
+                const endTime = new Date(eventDate.getTime() + 60 * 60 * 1000); // Assume 1 hour
+                if (now >= eventDate && now < endTime) {
+                  return 'current';
+                } else if (now >= endTime) {
+                  return 'past';
+                } else {
+                  return 'future';
+                }
               }
-            } else {
-              // Last event of the day on this stage
-              const endTime = new Date(eventDate.getTime() + 60 * 60 * 1000); // Assume 1 hour duration
-              if (now >= eventDate && now < endTime) {
-                return 'current';
-              } else if (now >= endTime) {
-                return 'past';
-              } else {
-                return 'future';
-              }
-            }
-          };
+            };
+
 
           const getStatusColor = (status, type) => {
             const baseColor = getTypeColor(type);
@@ -199,23 +213,25 @@
             }
           };
 
-          const filteredEvents = festivalData[selectedDay]
-            .filter(event => selectedVenue === 'ALL' || event.venue === selectedVenue)
-            .filter(event => {
-              if (!showPastPerformances) {
-                const status = getPerformanceStatus(event, festivalData[selectedDay]);
-                return status !== 'past';
-              }
-              return true;
-            });
 
-          const groupedEvents = filteredEvents.reduce((acc, event) => {
-            if (!acc[event.time]) acc[event.time] = [];
-            acc[event.time].push(event);
-            return acc;
-          }, {});
+            const filteredEvents = (festivalData[selectedDay] || [])
+              .filter(event => selectedVenue === 'ALL' || event.venue === selectedVenue)
+              .filter(event => {
+                if (!showPastPerformances) {
+                  const status = getPerformanceStatus(event, festivalData[selectedDay], selectedDay);
+                  return status !== 'past';
+                }
+                return true;
+              });
 
-          const timeSlots = Object.keys(groupedEvents).sort().filter(time => groupedEvents[time].length > 0);
+            const groupedEvents = filteredEvents.reduce((acc, event) => {
+              if (!acc[event.time]) acc[event.time] = [];
+              acc[event.time].push(event);
+              return acc;
+            }, {});
+
+            const timeSlots = Object.keys(groupedEvents).sort().filter(time => groupedEvents[time].length > 0);
+
 
           return React.createElement('div', { className: 'min-h-screen bg-gradient-to-br from-purple-900 via-gray-900 to-black text-white' },
             React.createElement('div', { className: 'bg-black/50 backdrop-blur-sm border-b border-purple-500/30 sticky top-0 z-10' },
@@ -301,7 +317,7 @@
               React.createElement('div', { className: 'space-y-6' },
                 timeSlots.map((time, index) => {
                   const events = groupedEvents[time];
-                  const hasCurrentEvent = events.some(event => getPerformanceStatus(event, festivalData[selectedDay]) === 'current');
+                  const hasCurrentEvent = events.some(event => getPerformanceStatus(event, festivalData[selectedDay], selectedDay) === 'current');
 
                   return React.createElement('div', {
                     key: time,
@@ -322,7 +338,7 @@
                       ),
                       React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4' },
                         events.map((event, eventIndex) => {
-                          const status = getPerformanceStatus(event, festivalData[selectedDay]);
+                          const status = getPerformanceStatus(event, festivalData[selectedDay], selectedDay);
                           const isPast = status === 'past';
                           return React.createElement('div', {
                             key: eventIndex,
