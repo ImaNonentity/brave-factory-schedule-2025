@@ -9,37 +9,39 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-    /* Force fixed background ONLY on mobile */
-    @media (max-width: 768px) {
-        body {
-            background-attachment: fixed !important;
-            background-size: cover !important;
-            background-position: center top !important;
-            overflow-x: hidden;
-        }
-
-        .all-view {
-            background-attachment: fixed !important;
-            background-size: cover !important;
-            background-position: center top !important;
-        }
-
-        /* Fix iOS background-attachment: fixed issues */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-image: inherit;
-            background-size: 100vw calc(100vw * 1.78);
-            background-position: center top;
-            background-repeat: no-repeat;
-            z-index: -1;
-            will-change: transform;
-        }
+@media (max-width: 768px) {
+    body {
+        background-attachment: fixed !important;
+        background-size: cover !important;
+        background-position: center top !important;
+        overflow-x: hidden;
+        background-image: none !important; /* Remove the original background on mobile */
     }
+
+    .all-view {
+        background-attachment: fixed !important;
+        background-size: cover !important;
+        background-position: center top !important;
+    }
+
+    /* Create one fixed background for the entire page */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-image: url('https://static-image-2.s3.us-west-1.amazonaws.com/blog_images/photo_2025-08-21_21-47-57.jpg');
+        background-size: cover;
+        background-position: center top;
+        background-repeat: no-repeat;
+        z-index: -1;
+        will-change: transform;
+    }
+}
+
+
 
     @font-face {
         font-family: 'MyCustomFont';
